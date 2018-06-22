@@ -4,11 +4,14 @@
     <meta charset="utf-8">
     <title>chatterbox</title>
     <link rel="stylesheet" href="styles/styles.css">
-
     <!-- dependencies -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script>
-      // YOU DO NOT NEED TO EDIT THIS CODE
+      function dropDownFunction() {
+        console.log(document.getElementById("myDropdown").childNodes[0]);
+      }
+
+      console.log(window);
       if (!/(&|\?)username=/.test(window.location.search)) {
         var newSearch = window.location.search;
         if (newSearch !== '' & newSearch !== '?') {
@@ -25,6 +28,17 @@
   <body>
     <div id="main">
       <h1>chatterbox</h1>
+      <div class="dropdown">
+      <button onclick="dropDownFunction()" class="dropDownButton"> Room: </button>
+        <div id="myDropdown" class="dropdown-content">
+          <p> HI </p>
+          <p> HI2 </p>
+          <p> HI3 </p>
+          <a href="#">Link 1</a>
+          <a href="#">Link 2</a>
+          <a href="#">Link 3</a>
+        </div>
+      </div>
       <!-- Your HTML goes here! -->
     </div>
     <div id="chats"></div>
