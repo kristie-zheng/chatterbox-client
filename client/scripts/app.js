@@ -8,6 +8,7 @@ class App {
   }
   
 
+
   send(message) {
     $.ajax({
       url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
@@ -39,13 +40,17 @@ class App {
     }
   }
 
-  fetch (optionsObj) {
-    var optionsObject = optionsObj || { order: '-createdAt', limit: 10};
+  fetch (optionsObj, roomname) {
+    if (optionsObj!== undefined) {
+      optionsObj['where'] = {'roomname': roomname}
+    }
+    var optionsObj = optionsObj || { order: '-createdAt', limit: 20}; //, where: {roomname: //whatever was chosendropdown}
+
     $.ajax(
       {
         url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
         type: 'GET',
-        data: optionsObject,
+        data: optionsObj,
         dataType: 'json',
         success: (data) => {
           this.data = data;
@@ -54,16 +59,19 @@ class App {
           
           for (var i = 0; i < this.data.results.length; i++) {
             if (this.data.results[i].roomname !== undefined && chatRooms.indexOf(this.data.results[i].roomname) === -1) { // come back to this for regex  
-            chatRooms.push(this.data.results[i].roomname)
+            chatRooms.push(this.data.results[i].roomname);
             }
           }
           console.log(chatRooms)
+          if (roomname === undefined) {
+            this.renderRoom(chatRooms);
+          }
           this.renderMessage(data);
         },
         error: (data) => {
           console.error('couldn\'t fetch', data);
         },
-      }, optionsObject);
+      }, optionsObj);
   }
 
 /*
@@ -73,8 +81,11 @@ var arrayOfChatrooms = data.*/
     //what does this method do
   }
 
-  clearMessages () {
+  clearMessages (value) {
     $('#chats').empty();
+    if (value === 1) {
+       $('select').empty();
+      }
     //should remove messages from the dom
   }
 
@@ -82,7 +93,11 @@ var arrayOfChatrooms = data.*/
   //   //adds messages to the dom
   // }
 
-  renderRoom() {
+  renderRoom(arrayOfChatrooms) {
+    this.clearMessages(1);
+    for (var i =0; i < arrayOfChatrooms.length; i++) {
+      $('select').append(`<option value="${arrayOfChatrooms[i]}">${arrayOfChatrooms[i]}</option>`);
+    }
     //adds rooms to the dom
   }
 }
@@ -123,10 +138,17 @@ let getInfo = () => {
   // send(object);
 };
 
+let logger = () => {
+  var roomSelection = $('select').val();
+  globalApp.fetch({ order: '-createdAt', limit: 20}, roomSelection);
+}
 
 $(document).ready(function () {
   var app = new App(userName);
   globalApp = app;
+  var message = {
+
+  }
   console.log(globalApp)
   app.init();
   console.log(app);
