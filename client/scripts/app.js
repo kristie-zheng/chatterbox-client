@@ -24,8 +24,9 @@ class App {
     });
   }
   
-  parse (obj) {
+  renderMessage (obj) {
     console.log(obj);
+    this.clearMessages(); 
     for (var i = 0; i < obj.results.length; i++) { // key === 0 or key === 5
       let id = obj.results[i].objectId;
       var username = obj.results[i].username;
@@ -33,13 +34,13 @@ class App {
       var text = obj.results[i].text;
       var createdAt = obj.results[i].createdAt;
       var str = `Username: ${username}, Text: ${text}, Created At: ${createdAt}`;
-      var $div = $(`<div class = "message"> ${str} </div>`);
+      var $div = $(`<div class = "message"> ${str} </div>`); 
       $('#chats').append($div);
     }
   }
 
-  fetch () {
-    var optionsObject = { order: '-createdAt', limit: 20};
+  fetch (optionsObj) {
+    var optionsObject = optionsObj || { order: '-createdAt', limit: 10};
     $.ajax(
       {
         url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
@@ -47,12 +48,13 @@ class App {
         data: optionsObject,
         dataType: 'json',
         success: (data) => {
-          this.parse(data);
+          this.data = data;
+          this.renderMessage(data);
         },
         error: (data) => {
           console.error('couldn\'t fetch', data);
         },
-      }, this.optionsObject);
+      }, optionsObject);
   }
 
 
@@ -65,9 +67,9 @@ class App {
     //should remove messages from the dom
   }
 
-  renderMessage () {
-    //adds messages to the dom
-  }
+  // renderMessage () {
+  //   //adds messages to the dom
+  // }
 
   renderRoom() {
     //adds rooms to the dom
