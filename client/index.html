@@ -3,27 +3,21 @@
   <head>
     <meta charset="utf-8">
     <title>chatterbox</title>
-    <h1> Hello </h1>
+    <h1 id = "userOnDOM">Welcome!</h1>
     <link rel="stylesheet" href="styles/styles.css">
     <!-- dependencies -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script>
-      function dropDownFunction() {
-        console.log(document.getElementById("myDropdown").childNodes[0]);
-      }
-
-      console.log(window);
       if (!/(&|\?)username=/.test(window.location.search)) {
         var newSearch = window.location.search;
         if (newSearch !== '' & newSearch !== '?') {
           newSearch += '&';
         }
-        const c = prompt('What is your name?') || 'anonymous';
-        console.log(c);
-        //newSearch += 'username=' + (prompt('What is your name?') || 'anonymous');
-          newSearch += 'username=' + myName;
+        newSearch += 'username=' + (prompt('What is your name?') || 'anonymous');
         window.location.search = newSearch;
       }
+        var userName = window.location.search.slice(10);
+        console.log(userName);
     </script>
     <!-- your scripts -->
     <script src="env/config.js"></script>

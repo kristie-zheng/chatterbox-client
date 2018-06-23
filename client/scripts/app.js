@@ -1,7 +1,9 @@
 class App {
-  constructor() {
+  constructor(username) {
     this.server = 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages';
-    this.data;
+    // this.data;
+    this.username = username;
+    this.friends = [];
   }
   
 
@@ -104,13 +106,16 @@ let getInfo = (usr) => {
 };
 
 
-// $(document).ready(function () {
+$(document).ready(function () {
+  var app = new App(userName);
+  console.log(app);
+});
 //   // for (var i = 0; i < 5; i++) {
 //   //   postMessage();
 //   // }
 //   // fetch();
-var app = new App();
-app.fetch();
-app.send();
+// var app = new App();
+// app.fetch();
+// app.send();
 
 // });
