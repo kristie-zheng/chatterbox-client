@@ -1,3 +1,4 @@
+var globalApp;
 class App {
   constructor(username) {
     this.server = 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages';
@@ -55,15 +56,16 @@ class App {
   }
 
 
-  init() {
+  init () {
     //what does this method do
   }
 
   clearMessages () {
+    $('#chats').empty();
     //should remove messages from the dom
   }
 
-  renderMessage() {
+  renderMessage () {
     //adds messages to the dom
   }
 
@@ -85,29 +87,35 @@ class App {
 
 
 
-
-
-
-let getInfo = (usr) => {
-  var username = usr;
-  var a = $("textarea").val();
-  while (a[0] === ' ') {
-    a = a.slice(1);
+let trim = (str) => {
+  while (str[0] === ' ') {
+    str = str.slice(1);
   }
-  console.log(a);
+  return str;
+}
+
+let getInfo = () => {
+  // console.log(this);
+  var username = this.userName;
   var msgContent = $("textarea").val();
+  msgContent = trim(msgContent);
   var roomname = $('select').val();
-  return {
+  var object = {
     username: username,
     text: msgContent,
     roomname: roomname,
     createdAt: (new Date()).toString()
   };
+  return object;
+  // send(object);
 };
 
 
 $(document).ready(function () {
   var app = new App(userName);
+  globalApp = app;
+  console.log(globalApp)
+  app.init();
   console.log(app);
 });
 //   // for (var i = 0; i < 5; i++) {
