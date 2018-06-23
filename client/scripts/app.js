@@ -49,6 +49,15 @@ class App {
         dataType: 'json',
         success: (data) => {
           this.data = data;
+          console.log(data)
+          var chatRooms = [];
+          
+          for (var i = 0; i < this.data.results.length; i++) {
+            if (this.data.results[i].roomname !== undefined && chatRooms.indexOf(this.data.results[i].roomname) === -1) { // come back to this for regex  
+            chatRooms.push(this.data.results[i].roomname)
+            }
+          }
+          console.log(chatRooms)
           this.renderMessage(data);
         },
         error: (data) => {
@@ -57,6 +66,8 @@ class App {
       }, optionsObject);
   }
 
+/*
+var arrayOfChatrooms = data.*/
 
   init () {
     //what does this method do
@@ -119,6 +130,8 @@ $(document).ready(function () {
   console.log(globalApp)
   app.init();
   console.log(app);
+
+
 });
 //   // for (var i = 0; i < 5; i++) {
 //   //   postMessage();

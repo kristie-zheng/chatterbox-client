@@ -133,3 +133,9 @@ form input[type=text] {
     background-color: #0090da;
 }
 
+.message {
+    border: 1px solid blue;
+    margin-bottom: 5px;
+    padding: 5px;
+    border-radius: 20px;
+}
