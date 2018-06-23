@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>chatterbox</title>
+    <h1> Hello </h1>
     <link rel="stylesheet" href="styles/styles.css">
     <!-- dependencies -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
@@ -17,7 +18,10 @@
         if (newSearch !== '' & newSearch !== '?') {
           newSearch += '&';
         }
-        newSearch += 'username=' + (prompt('What is your name?') || 'anonymous');
+        const c = prompt('What is your name?') || 'anonymous';
+        console.log(c);
+        //newSearch += 'username=' + (prompt('What is your name?') || 'anonymous');
+          newSearch += 'username=' + myName;
         window.location.search = newSearch;
       }
     </script>
@@ -40,7 +44,7 @@
       <div class = "textBox"> 
         <textarea rows="4" cols="50">
         </textarea>
-          <button class="dropDownButton"> submit </button>
+          <button onclick="console.log(getInfo(c))" class="dropDownButton"> submit </button>
       </div>
       <!-- Your HTML goes here! -->
     </div>

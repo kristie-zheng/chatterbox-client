@@ -3,8 +3,9 @@ class App {
     this.server = 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages';
     this.data;
   }
+  
 
-  send() {
+  send(message) {
     $.ajax({
       url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
       type: 'POST',
@@ -59,12 +60,24 @@ class App {
   clearMessages () {
     //should remove messages from the dom
   }
+
+  renderMessage() {
+    //adds messages to the dom
+  }
+
+  renderRoom() {
+    //adds rooms to the dom
+  }
 }
 
 
 
 
 
+// on doc load
+// name myFunction
+// that button.on click taget the text area and save to a variable 
+// pass that to our send
 
 
 
@@ -73,8 +86,22 @@ class App {
 
 
 
-
-
+let getInfo = (usr) => {
+  var username = usr;
+  var a = $("textarea").val();
+  while (a[0] === ' ') {
+    a = a.slice(1);
+  }
+  console.log(a);
+  var msgContent = $("textarea").val();
+  var roomname = $('select').val();
+  return {
+    username: username,
+    text: msgContent,
+    roomname: roomname,
+    createdAt: (new Date()).toString()
+  };
+};
 
 
 // $(document).ready(function () {
@@ -84,7 +111,6 @@ class App {
 //   // fetch();
 var app = new App();
 app.fetch();
-console.log(app);
-
+app.send();
 
 // });
