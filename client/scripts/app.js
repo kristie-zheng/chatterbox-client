@@ -1,9 +1,10 @@
 class App {
   constructor() {
-    this.optionsObject = { order: '-createdAt', limit: 20};
+    this.server = 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages';
+    this.data;
   }
 
-  postMessage() {
+  send() {
     $.ajax({
       url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
       type: 'POST',
@@ -18,26 +19,48 @@ class App {
       }
     });
   }
+  
   parse (obj) {
     console.log(obj);
     for (var i = 0; i < obj.results.length; i++) { // key === 0 or key === 5
-      var id = obj.results[i].objectId;
+      let id = obj.results[i].objectId;
       var username = obj.results[i].username;
       var roomname = obj.results[i].roomname;
       var text = obj.results[i].text;
       var createdAt = obj.results[i].createdAt;
       var str = `Username: ${username}, Text: ${text}, Created At: ${createdAt}`;
       var $div = $(`<div class = "message"> ${str} </div>`);
-      $('body').append($div);
+      $('#chats').append($div);
     }
   }
-  fetch () { 
-    $.get('http://parse.sfm6.hackreactor.com/chatterbox/classes/messages', this.optionsObject, function(data) {
-      parse(data);
-    });
+
+  fetch () {
+    var optionsObject = { order: '-createdAt', limit: 20};
+    $.ajax(
+      {
+        url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
+        type: 'GET',
+        data: optionsObject,
+        dataType: 'json',
+        success: (data) => {
+          this.parse(data);
+        },
+        error: (data) => {
+          console.error('couldn\'t fetch', data);
+        },
+      }, this.optionsObject);
   }
 
+
+  init() {
+    //what does this method do
+  }
+
+  clearMessages () {
+    //should remove messages from the dom
+  }
 }
+
 
 
 
@@ -60,5 +83,8 @@ class App {
 //   // }
 //   // fetch();
 var app = new App();
+app.fetch();
+console.log(app);
+
 
 // });
