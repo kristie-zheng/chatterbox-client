@@ -18,6 +18,8 @@
       }
         var userName = window.location.search.slice(10);
         console.log(userName);
+
+   
     </script>
     <!-- your scripts -->
     <script src="env/config.js"></script>
@@ -26,19 +28,22 @@
   <body>
     <div id="main">
       <h1>chatterbox</h1>
+      <div class = "chooseRoom">
+        Choose a room name or select an existing room:
+        <input type="text" id="customRoomName">
+      </div>
       <div class="dropdown">
-        <button onclick="logger()" class="dropDownButton"> Select Room </button>
         <select>
-          <option value="volvo">Volvo</option>
-          <option value="saab">Saab</option>
-          <option value="mercedes">Mercedes</option>
-          <option value="audi">Audi</option>
         </select>
+        <button onclick="logger()" class="dropDownButton"> Select Room </button>
+        <button onclick="createRoom()" class="dropDownButton"> Create Room </button>
+        
       </div>
       <div class = "textBox"> 
         <textarea rows="4" cols="50">
         </textarea>
           <button onclick="globalApp.send(getInfo())" class="dropDownButton"> Send Message </button> 
+        
       </div>
       <!-- Your HTML goes here! -->
     </div>

@@ -2,7 +2,7 @@ var globalApp;
 class App {
   constructor(username) {
     this.server = 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages';
-    // this.data;
+    this.rooms = [];
     this.username = username;
     this.friends = [];
   }
@@ -10,6 +10,8 @@ class App {
 
 
   send(message) {
+
+    console.log(message);
     $.ajax({
       url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
       type: 'POST',
@@ -17,6 +19,7 @@ class App {
       contentType: 'application/json',
       success: function (data) {
         console.log('chatterbox: Message sent');
+        globalApp.fetch({ order: '-createdAt', limit: 20}, message.roomname);
       },
       error: function (data) {
         // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -34,9 +37,28 @@ class App {
       var roomname = obj.results[i].roomname;
       var text = obj.results[i].text;
       var createdAt = obj.results[i].createdAt;
-      var str = `Username: ${username}, Text: ${text}, Created At: ${createdAt}`;
-      var $div = $(`<div class = "message"> ${str} </div>`); 
-      $('#chats').append($div);
+      var usernamestr = `${username}`
+      var str = `Text: ${text}, Created At: ${createdAt}`;
+      
+      var $usernameDiv = $(`<div class = "name">  ${usernamestr}  </div>`); 
+      var $messageDiv = $(`<div class = "message"> ${str} </div>`); 
+      var $chatbubble = $(`<div class = "chatbubble"></div>`); 
+      $chatbubble.append($usernameDiv)
+      $chatbubble.append($messageDiv);
+      // $messageDiv.appendTo($usernameDiv);
+      $('#chats').append($chatbubble);
+
+       $('.name').on('click', function() {
+          var friendName = $(this).text();
+          if(globalApp.friends.indexOf(friendName) === -1) {
+            globalApp.friends.push($(this).text());
+            // $(`.${friendName}`).css('color', 'green');
+            var nameArr = $('.name').text().split(' ')
+            $(`.name:contains(${friendName})`).css('color', 'green');
+              
+            }
+          console.log(globalApp.friends);
+        })
     }
   }
 
@@ -59,10 +81,12 @@ class App {
           
           for (var i = 0; i < this.data.results.length; i++) {
             if (this.data.results[i].roomname !== undefined && chatRooms.indexOf(this.data.results[i].roomname) === -1) { // come back to this for regex  
-            chatRooms.push(this.data.results[i].roomname);
+              chatRooms.push(this.data.results[i].roomname);
+        
             }
           }
-          console.log(chatRooms)
+          this.rooms = chatRooms;
+          console.log(this)
           if (roomname === undefined) {
             this.renderRoom(chatRooms);
           }
@@ -138,21 +162,25 @@ let getInfo = () => {
   // send(object);
 };
 
-let logger = () => {
-  var roomSelection = $('select').val();
-  globalApp.fetch({ order: '-createdAt', limit: 20}, roomSelection);
+let logger = (value) => {
+    var roomSelection = $('select').val();
+    globalApp.fetch({ order: '-createdAt', limit: 20}, roomSelection);
 }
+
+let createRoom = () => {
+  var tempRoomName = $('#customRoomName').val();
+  var fetchedStuff = fetch()
+}
+
 
 $(document).ready(function () {
   var app = new App(userName);
   globalApp = app;
-  var message = {
-
-  }
+  app.fetch();
   console.log(globalApp)
   app.init();
   console.log(app);
-
+ // write a function that will count how many differnt users have that room name
 
 });
 //   // for (var i = 0; i < 5; i++) {
