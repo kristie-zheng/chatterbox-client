@@ -4,7 +4,7 @@ var App = function() {
   var obj = {};
   obj.server = 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages';
   obj.rooms = [];
-  //obj.username = username;
+  // obj.username = userName;
   obj.friends = [];
   _.extend(obj, App.methods);
   return obj;
@@ -25,7 +25,7 @@ App.methods = {
       contentType: 'application/json',
       success: function (data) {
         console.log('chatterbox: Message sent');
-        globalApp.fetch({ order: '-createdAt', limit: 20}, message.roomname);
+        this.fetch({ order: '-createdAt', limit: 20}, message.roomname);
       },
       error: function (data) {
         // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -98,13 +98,14 @@ App.methods = {
 
       $('.name').on('click', function() {
         var friendName = $(this).text();
-        if (globalApp.friends.indexOf(friendName) === -1) {
-          globalApp.friends.push($(this).text());
+        console.log(this);
+        if (app.friends.indexOf(friendName) === -1) {
+          app.friends.push($(this).text());
           // $(`.${friendName}`).css('color', 'green');
           // var nameArr = $('.name').text().split(' ')
-          $(`.name:contains(${friendName})`).css('color', 'green');   
+          $(`.name:contains(${friendName})`).css('font-weight', 'bold');   
         }
-        console.log(globalApp.friends);
+        console.log(app.friends);
       });
     }
   },
@@ -140,7 +141,7 @@ App.methods = {
     // console.log(this);
     var username = this.userName;
     var msgContent = $('textarea').val();
-    msgContent = trim(msgContent);
+    msgContent = this.trim(msgContent);
     var roomname = $('select').val();
     var object = {
       username: username,
@@ -154,7 +155,7 @@ App.methods = {
 
   logger: function (value) {
     var roomSelection = $('select').val();
-    globalApp.fetch({ order: '-createdAt', limit: 20}, roomSelection);
+    this.fetch({ order: '-createdAt', limit: 20}, roomSelection);
   },
 
   createRoom: function () {

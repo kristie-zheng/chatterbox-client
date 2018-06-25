@@ -18,7 +18,7 @@
         window.location.search = newSearch;
       }
         var userName = window.location.search.slice(10);
-        console.log(userName);
+        //console.log(userName);
 
    
     </script>
@@ -36,14 +36,14 @@
       <div class="dropdown">
         <select>
         </select>
-        <button onclick="logger()" class="dropDownButton"> Select Room </button>
-        <button onclick="createRoom()" class="dropDownButton"> Create Room </button>
+        <button onclick="app.logger()" class="dropDownButton"> Select Room </button>
+        <button onclick="app.createRoom()" class="dropDownButton"> Create Room </button>
         
       </div>
       <div class = "textBox"> 
         <textarea rows="4" cols="50">
         </textarea>
-          <button onclick="globalApp.send(getInfo())" class="dropDownButton"> Send Message </button> 
+          <button onclick="app.send(app.getInfo())" class="dropDownButton"> Send Message </button> 
         
       </div>
       <!-- Your HTML goes here! -->
