@@ -61,6 +61,7 @@ App.methods = {
           // if (roomname === undefined) {
           //   this.renderRoom(chatRooms);
           // }
+          this.clearMessages();
           for (var i = 0; i < data.results.length; i++) {
             this.renderMessage(data.results[i]);
             if (_.contains(this.rooms, data.results[i].roomname) === false) {
@@ -104,14 +105,16 @@ App.methods = {
   },
 
   renderRoom: function(room) {
-    $('.roomSelect').append(`<option value="${room}">${room}</option>`);
+    $('select').empty();
+    $('#roomSelect').append(`<option value="${room}">${room}</option>`);
     // this.clearMessages(1);
     //adds rooms to the dom
   },
 
   selectOtherRoom: function(rooms) {
+    $('select').empty();
     for (var i = 0; i < rooms.length; i++) {
-      $('.roomSelect').append(`<option value="${rooms[i]}">${rooms[i]}</option>`);
+      $('#roomSelect').append(`<option value="${rooms[i]}">${rooms[i]}</option>`);
     }
   },
 
@@ -148,10 +151,15 @@ App.methods = {
   },
 
   createRoom: function () {
-    var tempRoomName = $('#customRoomName').val();
-    var fetchedStuff = fetch();
+    var customRoom = $('#customRoomName').val();
+    //var fetchedStuff = fetch();
+    if (_.contains(this.rooms, customRoom) === false) {
+      this.rooms.push(customRoom);
+      $('select').empty();
+      this.renderRoom(customRoom);
+    }
+    this.fetch(customRoom);
   }
-  
 };
 
 var app = App();
@@ -159,4 +167,5 @@ var app = App();
 $(document).ready(function () {
   app.fetch();
   app.init();
+  app.renderRoom();
 });

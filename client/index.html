@@ -33,9 +33,9 @@
         <input type="text" id="customRoomName">
       </div>
       <div class="dropdown">
-        <select class="roomSelect">
+        <select id="roomSelect">
         </select>
-        <button onclick="app.logger()" class="dropDownButton"> Select Room </button>
+        <button onclick="app.fetch($('select').val())" class="dropDownButton"> Select Room </button>
         <button onclick="app.createRoom()" class="dropDownButton"> Create Room </button>
         
       </div>
