@@ -14,12 +14,11 @@
         if (newSearch !== '' & newSearch !== '?') {
           newSearch += '&';
         }
+        var userName = (prompt('What is your name?') || 'anonymous')
         newSearch += 'username=' + (prompt('What is your name?') || 'anonymous');
         window.location.search = newSearch;
       }
-        var userName = window.location.search.slice(10);
-        //console.log(userName);
-
+        var name = window.location.search.slice(10);
    
     </script>
     <!-- your scripts -->
