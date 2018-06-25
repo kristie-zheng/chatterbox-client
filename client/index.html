@@ -14,7 +14,7 @@
         if (newSearch !== '' & newSearch !== '?') {
           newSearch += '&';
         }
-        var userName = (prompt('What is your name?') || 'anonymous')
+        var userName = (prompt('What is your name?') || 'anonymous');
         newSearch += 'username=' + (prompt('What is your name?') || 'anonymous');
         window.location.search = newSearch;
       }
@@ -31,12 +31,12 @@
       <div class = "chooseRoom">
         Choose a room name or select an existing room:
         <input type="text" id="customRoomName">
+        <button onclick="app.createRoom()" class="dropDownButton"> Create Room </button>
       </div>
       <div class="dropdown">
         <select id="roomSelect">
         </select>
         <button onclick="app.fetch($('select').val())" class="dropDownButton"> Select Room </button>
-        <button onclick="app.createRoom()" class="dropDownButton"> Create Room </button>
         
       </div>
       <div class = "textBox"> 
