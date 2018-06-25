@@ -34,11 +34,11 @@ App.methods = {
     });
   },
   
-  fetch: function (optionsObj, roomname) {
-    if (optionsObj !== undefined) {
+  fetch: function (roomname) {
+    var optionsObj = { order: '-createdAt', limit: 20}; 
+    if (roomname !== undefined) {
       optionsObj.where = {'roomname': roomname};
     }
-    var optionsObj = optionsObj || { order: '-createdAt', limit: 20}; //, where: {roomname: //whatever was chosendropdown}
     $.ajax(
       {
         url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
@@ -47,21 +47,24 @@ App.methods = {
         dataType: 'json',
         success: (data) => {
           this.data = data;
-          console.log(data);
-          var chatRooms = [];
+          console.log('here is the fetched data', data);
+          // var chatRooms = [];
           
-          for (var i = 0; i < this.data.results.length; i++) {
-            if (this.data.results[i].roomname !== undefined && chatRooms.indexOf(this.data.results[i].roomname) === -1) { // come back to this for regex  
-              chatRooms.push(this.data.results[i].roomname);
+          // for (var i = 0; i < this.data.results.length; i++) {
+          //   if (this.data.results[i].roomname !== undefined && chatRooms.indexOf(this.data.results[i].roomname) === -1) { // come back to this for regex  
+          //     chatRooms.push(this.data.results[i].roomname);
         
-            }
+          //   }
+          // }
+          // this.rooms = chatRooms;
+          // console.log(this);
+          // if (roomname === undefined) {
+          //   this.renderRoom(chatRooms);
+          // }
+          for (var i = 0; i < data.results.length; i++) {
+            this.renderMessage(data.results[i]);
           }
-          this.rooms = chatRooms;
-          console.log(this);
-          if (roomname === undefined) {
-            this.renderRoom(chatRooms);
-          }
-          this.renderMessage(data);
+          
         },
         error: (data) => {
           console.error('couldn\'t fetch', data);
@@ -77,47 +80,83 @@ App.methods = {
     //should remove messages from the dom
   },
 
-  renderMessage: function(obj) {
-    console.log('the obj is', obj);
-    this.clearMessages(); 
-    for (var i = 0; i < obj.results.length; i++) { // key === 0 or key === 5
-      let id = obj.results[i].objectId;
-      var username = obj.results[i].username;
-      var roomname = obj.results[i].roomname;
-      var text = obj.results[i].text;
-      var createdAt = obj.results[i].createdAt;
-      var usernamestr = `${username}`;
-      var str = `Text: ${text}, Created At: ${createdAt}`;
+  // displayFetchedMsgs: function(obj) {
+  //   console.log('the obj is', obj);
+  //   this.clearMessages(); 
+  //   for (var i = 0; i < obj.results.length; i++) { // key === 0 or key === 5
+  //     let id = obj.results[i].objectId;
+  //     var username = obj.results[i].username;
+  //     var roomname = obj.results[i].roomname;
+  //     var text = obj.results[i].text;
+  //     var createdAt = obj.results[i].createdAt;
+  //     var usernamestr = `${username}`;
+  //     var str = `Text: ${text}, Created At: ${createdAt}`;
       
-      var $usernameDiv = $(`<div class = 'name'>  ${usernamestr}  </div>`); 
-      var $messageDiv = $(`<div class = "message"> ${str} </div>`); 
-      var $chatbubble = $('<div class = "chatbubble"></div>'); 
-      $chatbubble.append($usernameDiv);
-      $chatbubble.append($messageDiv);
-      $('#chats').append($chatbubble);
+  //     var $usernameDiv = $(`<div class = 'name'>  ${usernamestr}  </div>`); 
+  //     var $messageDiv = $(`<div class = "message"> ${str} </div>`); 
+  //     var $chatbubble = $('<div class = "chatbubble"></div>'); 
+  //     $chatbubble.append($usernameDiv);
+  //     $chatbubble.append($messageDiv);
+  //     $('#chats').append($chatbubble);
 
-      $('.name').on('click', function() {
-        var friendName = $(this).text();
-        console.log(this);
-        if (app.friends.indexOf(friendName) === -1) {
-          app.friends.push($(this).text());
-          // $(`.${friendName}`).css('color', 'green');
-          // var nameArr = $('.name').text().split(' ')
-          $(`.name:contains(${friendName})`).css('font-weight', 'bold');   
-        }
-        console.log(app.friends);
-      });
+  //     $('.name').on('click', function() {
+  //       var friendName = $(this).text();
+  //       console.log(this);
+  //       if (app.friends.indexOf(friendName) === -1) {
+  //         app.friends.push($(this).text());
+  //         // $(`.${friendName}`).css('color', 'green');
+  //         // var nameArr = $('.name').text().split(' ')
+  //         $(`.name:contains(${friendName})`).css('font-weight', 'bold');   
+  //       }
+  //       console.log(app.friends);
+  //     });
+  //   }
+  // },
+
+  renderMessage: function(message) {
+    var username;
+    if (message.username === undefined) {
+      username = 'unknown user';
+    } else {
+      username = message.username;
     }
+    var roomname = message.roomname;
+    var text = message.text;
+    var timestamp = message.createdAt;
+    // var createdAt = obj.results[i].createdAt;
+    var usernamestr = `${username}`;
+    var str = `Text: ${text}`;
+    
+    var $usernameDiv = $(`<div class = 'username'>  ${usernamestr} </div>`); 
+    var $messageDiv = $(`<div class = "message"> ${str} at , ${timestamp} </div>`); 
+    var $chatbubble = $('<div class = "chatbubble"></div>'); 
+    $chatbubble.append($usernameDiv);
+    $chatbubble.append($messageDiv);
+    $('#chats').append($chatbubble);
   },
 
   renderRoom: function(arrayOfChatrooms) {
-    this.clearMessages(1);
-    for (var i = 0; i < arrayOfChatrooms.length; i++) {
-      $('select').append(`<option value="${arrayOfChatrooms[i]}">${arrayOfChatrooms[i]}</option>`);
-    }
+    $('select').append(`<option value="${arrayOfChatrooms}">${arrayOfChatrooms}</option>`);
+    // this.clearMessages(1);
+    // for (var i = 0; i < arrayOfChatrooms.length; i++) {
+    //   $('select').append(`<option value="${arrayOfChatrooms[i]}">${arrayOfChatrooms[i]}</option>`);
+    // }
     //adds rooms to the dom
   },
 
+  handleUsernameClick: function() {
+    $('.name').on('click', function() {
+      var friendName = $(this).text();
+      console.log(this);
+      if (app.friends.indexOf(friendName) === -1) {
+        app.friends.push($(this).text());
+        // $(`.${friendName}`).css('color', 'green');
+        // var nameArr = $('.name').text().split(' ')
+        $(`.name:contains(${friendName})`).css('font-weight', 'bold');   
+      }
+      console.log(app.friends);
+    });
+  },
 
   // /*
   // var arrayOfChatrooms = data.*/
