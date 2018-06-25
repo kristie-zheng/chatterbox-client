@@ -63,8 +63,11 @@ App.methods = {
           // }
           for (var i = 0; i < data.results.length; i++) {
             this.renderMessage(data.results[i]);
+            if (_.contains(this.rooms, data.results[i].roomname) === false) {
+              this.rooms.push(data.results[i].roomname); 
+            }
           }
-          
+          this.selectOtherRoom(this.rooms);
         },
         error: (data) => {
           console.error('couldn\'t fetch', data);
@@ -100,13 +103,16 @@ App.methods = {
     $('#chats').append($chatbubble);
   },
 
-  renderRoom: function(arrayOfChatrooms) {
-    $('select').append(`<option value="${arrayOfChatrooms}">${arrayOfChatrooms}</option>`);
+  renderRoom: function(room) {
+    $('.roomSelect').append(`<option value="${room}">${room}</option>`);
     // this.clearMessages(1);
-    // for (var i = 0; i < arrayOfChatrooms.length; i++) {
-    //   $('select').append(`<option value="${arrayOfChatrooms[i]}">${arrayOfChatrooms[i]}</option>`);
-    // }
     //adds rooms to the dom
+  },
+
+  selectOtherRoom: function(rooms) {
+    for (var i = 0; i < rooms.length; i++) {
+      $('.roomSelect').append(`<option value="${rooms[i]}">${rooms[i]}</option>`);
+    }
   },
 
   handleUsernameClick: function() {
