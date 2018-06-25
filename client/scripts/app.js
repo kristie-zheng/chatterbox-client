@@ -76,12 +76,12 @@ App.methods = {
       }, optionsObj);
   },
 
-  clearMessages: function(value) {
+  clearMessages: function() {
     $('#chats').empty();
-    if (value === 1) {
-      $('select').empty();
-    }
-    //should remove messages from the dom
+  },
+
+  clearRoomList: function() {
+    $('select').empty();
   },
 
   renderMessage: function(message) {
@@ -105,14 +105,14 @@ App.methods = {
   },
 
   renderRoom: function(room) {
-    $('select').empty();
+    this.clearRoomList();
     $('#roomSelect').append(`<option value="${room}">${room}</option>`);
     // this.clearMessages(1);
     //adds rooms to the dom
   },
 
   selectOtherRoom: function(rooms) {
-    $('select').empty();
+    this.clearRoomList();
     for (var i = 0; i < rooms.length; i++) {
       $('#roomSelect').append(`<option value="${rooms[i]}">${rooms[i]}</option>`);
     }
@@ -155,7 +155,7 @@ App.methods = {
     //var fetchedStuff = fetch();
     if (_.contains(this.rooms, customRoom) === false) {
       this.rooms.push(customRoom);
-      $('select').empty();
+      this.clearRoomList();
       this.renderRoom(customRoom);
     }
     this.fetch(customRoom);
@@ -168,4 +168,5 @@ $(document).ready(function () {
   app.fetch();
   app.init();
   app.renderRoom();
+  app.handleUsernameClick();
 });
