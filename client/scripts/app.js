@@ -17,7 +17,6 @@ App.methods = {
   },
 
   send: function(message) {
-    console.log(message);
     $.ajax({
       url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
       type: 'POST',
@@ -25,7 +24,8 @@ App.methods = {
       contentType: 'application/json',
       success: function (data) {
         console.log('chatterbox: Message sent');
-        this.fetch({ order: '-createdAt', limit: 20}, message.roomname);
+        console.log('this is', this);
+        app.fetch({ order: '-createdAt', limit: 20}, message.roomname);
       },
       error: function (data) {
         // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -78,7 +78,7 @@ App.methods = {
   },
 
   renderMessage: function(obj) {
-    console.log(obj);
+    console.log('the obj is', obj);
     this.clearMessages(); 
     for (var i = 0; i < obj.results.length; i++) { // key === 0 or key === 5
       let id = obj.results[i].objectId;
